@@ -18,9 +18,9 @@ CALIFICACION:
 Sección A: 14 / 15
 Sección B: 18 / 20
 Sección C: 16.5 / 18
-Sección D: 18 / 18
-Sección E: 19 / 29
-TOTAL: 86 / 100
+Sección D: 16 / 18
+Sección E: 16 / 29
+TOTAL: 81 / 100
 
 
 
@@ -296,7 +296,7 @@ C3. (6 pts) Lee este fragmento: - 6
 ║   Identifícalo, explica por qué es un error y corrígelo.  ║
 ╚══════════════════════════════════════════════════════════════╝
 
-D1. (6 pts) - 6
+D1. (6 pts) - 4
 
    int mayor(int a, int b) {
        if (a > b) {
@@ -429,7 +429,7 @@ Tu solución:
 
 
 
-E2. (17 pts) - 10
+E2. (17 pts) - 7
 Escribe la función recursiva y el main completo:
   int potencia(int base, int exponente)
 
