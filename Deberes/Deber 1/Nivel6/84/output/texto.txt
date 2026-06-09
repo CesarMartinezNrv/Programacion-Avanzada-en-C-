@@ -1,0 +1,3 @@
+La programacion es el arte de resolver problemas
+C++ es un lenguaje potente y rapido
+Aprender a programar abre muchas puertas

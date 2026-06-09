@@ -1,0 +1,4 @@
+1. Las rosas son rojas
+2. El mar es profundo
+3. El codigo es logica
+4. C++ es poderoso

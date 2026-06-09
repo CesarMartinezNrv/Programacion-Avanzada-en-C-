@@ -1,0 +1,2937 @@
+================================================================
+   CUADERNILLO DE NIVELACIÓN — C++ DE CERO A PRO
+   Curso: Programación Avanzada en C++
+   Universidad San Francisco de Quito — USFQ
+   
+   Instrucciones generales:
+   - Resuelve cada ejercicio A MANO en papel o cuaderno primero.
+   - Para ejercicios de CÓDIGO: escribe el programa completo.
+   - Para ejercicios de TRAZA: dibuja el estado de la memoria
+     con casillas y flechas, paso a paso, tal como se indica.
+   - Para ejercicios de ANÁLISIS: responde con tus propias palabras.
+   - Entrega digital: un archivo por ejercicio (E001.cpp, etc.) en GitHub.
+   - La DEFENSA oral vale más que el archivo entregado.
+
+   Compilar y ejecutar desde terminal:
+     g++ E001.cpp -o E001
+     ./E001        (Linux / Mac)
+     E001.exe      (Windows)
+   O usa tu IDE preferido (VS Code, Code::Blocks, CLion).
+
+   Tiempo estimado por nivel:
+     Nivel 0 — Calentamiento    : 15-20 min por ejercicio
+     Nivel 1 — Control de flujo : 20-30 min por ejercicio
+     Nivel 2 — Funciones        : 25-35 min por ejercicio
+     Nivel 3 — Arreglos         : 30-40 min por ejercicio
+     Nivel 4 — Punteros         : 40-50 min (incluye traza)
+     Nivel 5 — Memoria dinámica : 40-50 min (incluye traza)
+     Nivel 6 — Archivos         : 30-40 min por ejercicio
+     Nivel 7 — OOP              : 45-60 min por ejercicio
+================================================================
+
+
+╔══════════════════════════════════════════════════════════════╗
+║          NIVEL 0 — CALENTAMIENTO  (E001–E010)               ║
+║   Variables · Tipos · cin/cout · Operadores básicos         ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ ES UN PROGRAMA EN C++?
+----------------------------
+Un programa es una secuencia de instrucciones que la computadora
+ejecuta de arriba hacia abajo, una por una.
+La estructura mínima de todo programa C++ es:
+
+  #include <iostream>
+  using namespace std;
+
+  int main() {
+      // Aquí van tus instrucciones
+      return 0;
+  }
+
+  - #include <iostream> : permite usar cout y cin
+  - int main()          : punto de entrada del programa
+  - return 0            : indica que el programa terminó bien
+
+
+¿QUÉ ES UNA VARIABLE?
+---------------------
+Una variable es una "caja con nombre" donde guardas un dato.
+Antes de usarla debes DECLARARLA indicando su tipo y nombre.
+
+  Analogía: piensa en una variable como un vaso etiquetado.
+  El tipo dice qué puede contener (agua, jugo, sopa).
+  El nombre es la etiqueta del vaso.
+
+TIPOS DE DATOS BÁSICOS:
+  int    → números enteros         Ej: -3, 0, 42, 1000
+  double → números con decimales   Ej: 3.14, -0.5, 100.0
+  char   → un solo carácter        Ej: 'A', 'z', '7', '!'
+  string → cadena de texto         Ej: "hola", "C++"
+  bool   → verdadero o falso       Ej: true, false
+
+  NOTA sobre string: para usar string incluye al inicio:
+  #include <string>
+  En la mayoría de compiladores <iostream> ya lo incluye,
+  pero es buena práctica agregarlo explícitamente.
+
+DECLARAR e INICIALIZAR una variable:
+  int edad;           // declara (la caja existe pero está vacía)
+  edad = 22;          // inicializa (le pones un valor)
+  int altura = 175;   // declarar e inicializar en una línea
+
+
+ENTRADA Y SALIDA:
+-----------------
+  cout << "Hola";       // imprime en pantalla
+  cout << endl;         // salta a la siguiente línea
+  cout << "Valor: " << x << endl;  // imprime texto y variable
+
+  cin >> x;             // lee un valor del teclado y lo guarda en x
+  cin >> a >> b;        // lee dos valores seguidos
+
+
+OPERADORES ARITMÉTICOS:
+-----------------------
+  +   suma             5 + 3 = 8
+  -   resta            5 - 3 = 2
+  *   multiplicación   5 * 3 = 15
+  /   división         7 / 2 = 3   ← división ENTERA si ambos son int
+                       7.0 / 2 = 3.5 ← decimal si uno es double
+  %   módulo (resto)   7 % 2 = 1   (el resto de dividir 7 entre 2)
+
+
+FORMATO DE SALIDA:
+------------------
+  Para imprimir con N decimales necesitas #include <iomanip>:
+  #include <iostream>
+  #include <iomanip>
+  using namespace std;
+  cout << fixed << setprecision(2) << 3.14159; // imprime 3.14
+
+  NOTA: incluye <iomanip> SOLO cuando uses setprecision.
+  No lo incluyas si no lo necesitas — incluir headers sin usar
+  es una mala práctica en C++.
+
+OPERADORES DE ASIGNACIÓN COMPUESTA:
+-------------------------------------
+  Muy usados en bucles y acumuladores:
+  i++        equivale a   i = i + 1   (incremento)
+  i--        equivale a   i = i - 1   (decremento)
+  suma += x  equivale a   suma = suma + x
+  prod *= x  equivale a   prod = prod * x
+  x -= 5     equivale a   x = x - 5
+
+  Ejemplo:
+  int suma = 0;
+  suma += 10;  // suma vale 10
+  suma += 5;   // suma vale 15
+
+
+EJEMPLO RESUELTO:
+-----------------
+  Problema: Lee el nombre, la edad y la estatura de una persona.
+  Imprime cuántos años cumplirá el próximo año y su IMC
+  aproximado (asume peso = 70 kg para simplificar).
+
+  #include <iostream>
+  #include <iomanip>       // necesario para setprecision
+  using namespace std;
+
+  int main() {
+      string nombre;
+      int edad;
+      double estatura;
+
+      cout << "Nombre: ";   cin >> nombre;
+      cout << "Edad: ";     cin >> edad;
+      cout << "Estatura: "; cin >> estatura;
+
+      double imc = 70.0 / (estatura * estatura);
+
+      cout << "Hola, " << nombre << "!" << endl;
+      cout << "El proximo año tendras " << edad + 1 << " años." << endl;
+      cout << fixed << setprecision(2);
+      cout << "IMC aproximado: " << imc << endl;
+
+      return 0;
+  }
+
+  Entrada:    Ana   25   1.65
+  Salida:     Hola, Ana!
+              El proximo año tendras 26 años.
+              IMC aproximado: 25.71
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 0
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E001 | Salida básica
+Escribe un programa que imprima exactamente este mensaje.
+No uses variables. Solo cout.
+
+Entrada: (ninguna)
+Salida esperada:
+  Hola, mundo. Esto es C++.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E002 | Variables enteras y operadores
+Declara dos variables enteras: a = 15 y b = 7.
+Calcula e imprime su suma, resta, producto y cociente entero.
+
+Entrada: (ninguna)
+Salida esperada:
+  Suma: 22
+  Resta: 8
+  Producto: 105
+  Cociente: 2
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E003 | cin y cout
+Lee dos números enteros desde el teclado e imprime su suma.
+
+Entrada:
+  12
+  8
+Salida esperada:
+  La suma es: 20
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E004 | double y formato decimal
+Lee el precio unitario de un producto y la cantidad comprada.
+Imprime el total con 2 decimales.
+
+Entrada:
+  4.50
+  3
+Salida esperada:
+  Total a pagar: $13.50
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E005 | Módulo y paridad
+Lee un número entero. Calcula su módulo con 2 e imprime
+si es par o impar. Usa if para el mensaje.
+
+Entrada:
+  14
+Salida esperada:
+  14 % 2 = 0
+  El numero es par.
+
+Entrada alternativa:
+  7
+Salida esperada:
+  7 % 2 = 1
+  El numero es impar.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E006 | string y saludo
+Lee el nombre del usuario (una sola palabra) y salúdalo.
+
+Entrada:
+  Ana
+Salida esperada:
+  Hola, Ana! Bienvenido/a al sistema.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E007 | Conversión de temperatura
+Lee una temperatura en Celsius (double).
+Conviértela a Fahrenheit: F = C * 9.0/5.0 + 32
+Muestra el resultado con 1 decimal.
+
+Entrada:
+  100.0
+Salida esperada:
+  100.0 C = 212.0 F
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E008 | Ficha personal
+Lee el nombre (string), edad (int) y estatura en metros
+(double) de una persona. Imprímelos con formato de ficha.
+
+Entrada:
+  Luis
+  22
+  1.75
+Salida esperada:
+  === Ficha Personal ===
+  Nombre  : Luis
+  Edad    : 22 años
+  Estatura: 1.75 m
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E009 | Promedio de tres números
+Lee tres enteros e imprime su promedio con 2 decimales.
+Recuerda: para obtener decimal, usa (double) al dividir.
+
+Entrada:
+  10
+  7
+  15
+Salida esperada:
+  Promedio: 10.67
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E010 | Área y perímetro del círculo
+Lee el radio de un círculo (double).
+Usa PI = 3.14159.
+Imprime área y perímetro con 2 decimales.
+
+Fórmulas:
+  Área     = PI * radio * radio
+  Perímetro = 2 * PI * radio
+
+Entrada:
+  5.0
+Salida esperada:
+  Radio: 5.00
+  Area: 78.54
+  Perimetro: 31.42
+----------------------------------------------------------------
+
+
+╔══════════════════════════════════════════════════════════════╗
+║         NIVEL 1 — CONTROL DE FLUJO  (E011–E025)            ║
+║         if/else · switch · while · for · do-while          ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ ES EL CONTROL DE FLUJO?
+-----------------------------
+Por defecto, un programa ejecuta instrucciones de arriba hacia
+abajo. El control de flujo permite DECIDIR qué ejecutar y
+REPETIR instrucciones según condiciones.
+
+1. DECISIÓN: if / else / else if
+---------------------------------
+  if (condición) {
+      // se ejecuta si la condición es VERDADERA
+  } else if (otra condición) {
+      // se ejecuta si la segunda condición es verdadera
+  } else {
+      // se ejecuta si NINGUNA condición fue verdadera
+  }
+
+  Operadores de comparación:
+    ==  igual que         !=  distinto de
+    >   mayor que         <   menor que
+    >=  mayor o igual     <=  menor o igual
+
+  Operadores lógicos:
+    &&  Y (ambas deben ser verdaderas)
+    ||  O (basta con que una sea verdadera)
+    !   NO (invierte el resultado)
+
+
+2. SELECCIÓN MÚLTIPLE: switch
+------------------------------
+  switch (variable) {
+      case valor1:
+          // instrucciones
+          break;
+      case valor2:
+          // instrucciones
+          break;
+      default:
+          // si ningún case coincide
+  }
+  IMPORTANTE: sin break, la ejecución "cae" al siguiente case.
+
+
+3. REPETICIÓN: bucles
+----------------------
+
+  WHILE — repite MIENTRAS la condición sea verdadera.
+  Se usa cuando NO sabes cuántas veces vas a repetir.
+    int i = 0;
+    while (i < 5) {
+        cout << i << " ";
+        i++;
+    }
+    // imprime: 0 1 2 3 4
+
+  FOR — repite un número CONOCIDO de veces.
+  Estructura: for (inicio; condición; actualización)
+    for (int i = 0; i < 5; i++) {
+        cout << i << " ";
+    }
+    // imprime: 0 1 2 3 4
+
+  DO-WHILE — ejecuta el cuerpo AL MENOS UNA VEZ,
+  luego verifica la condición.
+    int opcion;
+    do {
+        cout << "Ingrese opcion (0 para salir): ";
+        cin >> opcion;
+    } while (opcion != 0);
+
+  ¿CUÁL USAR?
+    - ¿Sabes cuántas veces? → for
+    - ¿No sabes cuántas, pero verificas antes? → while
+    - ¿Necesitas ejecutar al menos una vez? → do-while
+
+
+EJEMPLO RESUELTO:
+-----------------
+  Problema: Lee N notas (N ingresado por el usuario).
+  Imprime cuántas son aprobatorias (>= 60) y cuántas no.
+
+  #include <iostream>
+  using namespace std;
+
+  int main() {
+      int n;
+      int nota;
+      int aprobados = 0;
+      int reprobados = 0;
+
+      cout << "Cuantas notas? ";
+      cin >> n;
+
+      for (int i = 0; i < n; i++) {
+          cout << "Nota " << i+1 << ": ";
+          cin >> nota;
+          if (nota >= 60) {
+              aprobados++;
+          } else {
+              reprobados++;
+          }
+      }
+
+      cout << "Aprobados: " << aprobados << endl;
+      cout << "Reprobados: " << reprobados << endl;
+      return 0;
+  }
+
+  Entrada: 3   85  55  72
+  Salida:
+    Aprobados: 2
+    Reprobados: 1
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 1
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E011 | if/else — positivo, negativo o cero
+Lee un número entero e indica si es positivo, negativo o cero.
+
+Entrada: -8
+Salida esperada:
+  El numero -8 es negativo.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E012 | if/else anidado — calificación por letra
+Lee la nota de un estudiante (0-100) e imprime su letra:
+  90-100 → A    80-89 → B    70-79 → C
+  60-69  → D    0-59  → F
+
+Entrada: 85
+Salida esperada:
+  Nota: 85 -> Calificacion: B
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E013 | switch — nombre del mes
+Lee un número de mes (1-12) e imprime su nombre.
+Si está fuera de rango, imprime "Mes invalido".
+
+Entrada: 7
+Salida esperada:
+  Mes 7: Julio
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E014 | while — contar hasta N
+Lee N e imprime los números del 1 al N separados por espacio.
+
+Entrada: 5
+Salida esperada:
+  1 2 3 4 5
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E015 | for — suma acumulada
+Lee N y luego N enteros. Imprime la suma total al final.
+
+Entrada:
+  4
+  3 8 2 5
+Salida esperada:
+  Suma total: 18
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E016 | for — tabla de multiplicar
+Lee un número N e imprime su tabla de multiplicar del 1 al 10.
+
+Entrada: 7
+Salida esperada:
+  7 x 1 = 7
+  7 x 2 = 14
+  7 x 3 = 21
+  7 x 4 = 28
+  7 x 5 = 35
+  7 x 6 = 42
+  7 x 7 = 49
+  7 x 8 = 56
+  7 x 9 = 63
+  7 x 10 = 70
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E017 | for — factorial
+Lee N (N >= 0) y calcula su factorial usando un bucle for.
+
+  Recuerda: 0! = 1,  5! = 5*4*3*2*1 = 120
+
+Entrada: 6
+Salida esperada:
+  6! = 720
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E018 | while — contar positivos y negativos
+Lee enteros uno por uno hasta que el usuario ingrese 0 (centinela).
+Al final imprime cuántos positivos y negativos ingresó.
+El 0 no cuenta como positivo ni negativo.
+
+Entrada:
+  5
+  -3
+  8
+  -1
+  4
+  0
+Salida esperada:
+  Positivos: 3
+  Negativos: 2
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E019 | for anidado — triángulo de asteriscos
+Lee N e imprime un triángulo de N filas con asteriscos.
+
+Entrada: 4
+Salida esperada:
+  *
+  **
+  ***
+  ****
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E020 | while — máximo y mínimo
+Lee N enteros e imprime el mayor y el menor.
+
+Entrada:
+  5
+  3 9 1 7 4
+Salida esperada:
+  Mayor: 9
+  Menor: 1
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E021 | for + string — contar vocales
+Lee una palabra (sin espacios) y cuenta sus vocales
+(a, e, i, o, u — mayúsculas y minúsculas).
+
+  Traza antes de codificar: en "Electrodomestico" identifica
+  cada vocal manualmente para verificar tu solución.
+  E-l-e-c-t-r-o-d-o-m-e-s-t-i-c-o → E,e,o,o,e,i,o = 7 vocales
+
+Entrada: Electrodomestico
+Salida esperada:
+  Vocales en "Electrodomestico": 7
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E022 | for — número primo
+Lee un entero positivo e indica si es primo.
+Un número primo solo es divisible entre 1 y él mismo.
+
+Entrada: 17
+Salida esperada:
+  17 es primo.
+
+Entrada alternativa: 12
+Salida esperada:
+  12 no es primo.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E023 | for — serie de Fibonacci
+Lee N e imprime los primeros N términos de la serie.
+  Serie: 0 1 1 2 3 5 8 13 21 ...
+  Cada término = suma de los dos anteriores.
+
+Entrada: 8
+Salida esperada:
+  0 1 1 2 3 5 8 13
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E024 | do-while — menú interactivo
+Muestra un menú repetidamente hasta que el usuario elija salir.
+  1. Saludar   → imprime "Hola!"
+  2. Despedirse → imprime "Hasta luego!"
+  3. Salir     → termina
+
+Entrada: 1  2  3
+Salida esperada:
+  === Menu ===
+  1. Saludar
+  2. Despedirse
+  3. Salir
+  Opcion: Hola!
+  === Menu ===
+  1. Saludar
+  2. Despedirse
+  3. Salir
+  Opcion: Hasta luego!
+  === Menu ===
+  1. Saludar
+  2. Despedirse
+  3. Salir
+  Opcion: Programa terminado.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E025 | do-while — validación de entrada
+Pide una nota entre 0 y 100.
+Si está fuera de rango, vuelve a pedir.
+Cuando sea válida, imprime "Nota aceptada: X".
+
+Entrada: -5  110  85
+Salida esperada:
+  Ingrese nota (0-100): Valor invalido. Intente de nuevo.
+  Ingrese nota (0-100): Valor invalido. Intente de nuevo.
+  Ingrese nota (0-100): Nota aceptada: 85
+----------------------------------------------------------------
+
+
+╔══════════════════════════════════════════════════════════════╗
+║            NIVEL 2 — FUNCIONES  (E026–E040)                ║
+║    Definición · Parámetros · Retorno · Sobrecarga          ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ ES UNA FUNCIÓN?
+---------------------
+Una función es un bloque de código con nombre que realiza
+una tarea específica y puede reutilizarse.
+
+  Analogía: una función es como una receta de cocina.
+  Tiene un nombre ("torta de chocolate"), recibe ingredientes
+  (parámetros) y produce un resultado (valor de retorno).
+
+VOCABULARIO CLAVE:
+------------------
+  Definición   → donde describes qué hace la función
+  Llamada      → donde usas la función en tu código
+  Parámetro    → variable en la DEFINICIÓN de la función
+                 (el "hueco" que espera recibir un dato)
+  Argumento    → valor real que envías al LLAMAR la función
+                 (el dato concreto que llena el hueco)
+  Tipo de retorno → tipo del dato que devuelve la función
+  void         → la función no devuelve nada
+  return       → termina la función y devuelve el valor
+
+ESTRUCTURA DE UNA FUNCIÓN:
+---------------------------
+  tipo_retorno nombreFuncion(tipo param1, tipo param2) {
+      // instrucciones
+      return valor;  // si el tipo no es void
+  }
+
+EJEMPLOS:
+  // Función sin retorno (void), sin parámetros
+  void saludar() {
+      cout << "Hola!" << endl;
+  }
+
+  // Función con retorno y parámetros
+  int sumar(int a, int b) {
+      return a + b;
+  }
+
+  // En main:
+  saludar();                  // llamada sin argumentos
+  int resultado = sumar(3, 5); // llamada con argumentos 3 y 5
+  //                 ^  ^
+  //             argumento argumento
+
+
+PARÁMETROS POR VALOR vs POR REFERENCIA:
+----------------------------------------
+  Por valor: la función recibe una COPIA del dato.
+  Modificar la copia NO afecta la variable original.
+  Úsalo cuando no quieres que la función modifique el dato.
+
+    void duplicarCopia(int x) {
+        x = x * 2;  // modifica la copia, el original no cambia
+    }
+
+  Por referencia (&): la función recibe la variable ORIGINAL.
+  Modificarla SÍ afecta la variable original.
+  Úsalo cuando la función necesita modificar el dato.
+
+    void duplicarOriginal(int &x) {
+        x = x * 2;  // modifica el original directamente
+    }
+
+    int a = 5;
+    duplicarCopia(a);    // a sigue siendo 5 — copia no afecta
+    duplicarOriginal(a); // a ahora es 10 — original modificado
+
+  ¿Cuándo usar cada uno?
+    Por valor    → cuando solo necesitas LEER el dato
+    Por referencia → cuando necesitas MODIFICAR el dato
+
+
+SOBRECARGA DE FUNCIONES:
+-------------------------
+  Puedes tener dos funciones con el MISMO NOMBRE si tienen
+  diferentes tipos o cantidad de parámetros.
+
+    int mayor(int a, int b) { return a > b ? a : b; }
+    double mayor(double a, double b) { return a > b ? a : b; }
+
+  C++ elige automáticamente cuál usar según los argumentos.
+
+  EL OPERADOR TERNARIO (?:):
+  La expresión  condicion ? valor_si_true : valor_si_false
+  es una forma corta de un if/else que retorna un valor.
+
+    int mayor = (a > b) ? a : b;
+    // equivale a:
+    int mayor;
+    if (a > b) mayor = a;
+    else       mayor = b;
+
+
+FUNCIONES RECURSIVAS:
+---------------------
+  Una función es recursiva si se llama a sí misma.
+  SIEMPRE necesita un caso base que detenga la recursión.
+
+    int factorial(int n) {
+        if (n == 0) return 1;      // caso base
+        return n * factorial(n-1); // llamada recursiva
+    }
+
+  PILA DE LLAMADAS — cómo lo ve la memoria:
+  Cada llamada abre un nuevo "marco" en el stack.
+  Los marcos se apilan hacia arriba y se resuelven de vuelta.
+
+  factorial(4):
+
+  SUBIDA (apilando):          BAJADA (resolviendo):
+  ┌─────────────────┐
+  │ factorial(0)=1  │  ← caso base, empieza a bajar
+  ├─────────────────┤
+  │ factorial(1)    │  → 1 * factorial(0) = 1 * 1 = 1
+  ├─────────────────┤
+  │ factorial(2)    │  → 2 * factorial(1) = 2 * 1 = 2
+  ├─────────────────┤
+  │ factorial(3)    │  → 3 * factorial(2) = 3 * 2 = 6
+  ├─────────────────┤
+  │ factorial(4)    │  → 4 * factorial(3) = 4 * 6 = 24
+  └─────────────────┘  ← resultado final
+
+  ADVERTENCIA: si no hay caso base, la recursión es infinita
+  y el programa termina con "stack overflow" (pila llena).
+
+
+SCOPE (ALCANCE) DE VARIABLES:
+------------------------------
+  Las variables declaradas dentro de una función SOLO existen
+  dentro de ella. No puedes usarlas desde main ni desde
+  otra función.
+
+    void miFuncion() {
+        int x = 10;  // x solo existe aquí adentro
+    }
+    // x no existe aquí afuera
+
+PARÁMETROS CON VALOR POR DEFECTO:
+-----------------------------------
+  Puedes asignar un valor por defecto a un parámetro.
+  Si el llamador no pasa ese argumento, se usa el valor por defecto.
+
+    void saludar(string nombre = "amigo") {
+        cout << "Hola, " << nombre << "!" << endl;
+    }
+
+    saludar("Ana");   // imprime: Hola, Ana!
+    saludar();        // imprime: Hola, amigo!
+
+  REGLA: los parámetros con valor por defecto van al FINAL
+  de la lista de parámetros.
+
+    void imprimir(int n, char c = '-') { ... }  // correcto
+    void imprimir(char c = '-', int n) { ... }  // ERROR
+
+EJEMPLO RESUELTO:
+-----------------
+  Problema: Función que calcula el área de un rectángulo
+  e imprime el resultado con 2 decimales.
+
+  #include <iostream>
+  #include <iomanip>
+  using namespace std;
+
+  // Definición de la función
+  double calcularArea(double base, double altura) {
+      return base * altura;  // calcula y devuelve el resultado
+  }
+
+  int main() {
+      double b, h;
+      cout << "Base: ";   cin >> b;
+      cout << "Altura: "; cin >> h;
+
+      // Llamada a la función con argumentos b y h
+      double resultado = calcularArea(b, h);
+      cout << fixed << setprecision(2);
+      cout << "Area: " << resultado << endl;
+      return 0;
+  }
+
+  Entrada: 5.0  3.0
+  Salida:  Area: 15.00
+
+  REGLA DE FORMATO: en este cuadernillo, todos los valores
+  double se imprimen con 2 decimales usando fixed+setprecision(2),
+  a menos que el enunciado indique lo contrario.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E026 | Función void sin retorno
+Escribe void saludar(string nombre) que imprima:
+"Hola, [nombre]! Bienvenido al sistema."
+Llámala con el nombre leído del teclado.
+
+Entrada: Carla
+Salida esperada:
+  Hola, Carla! Bienvenido al sistema.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E027 | Función con retorno entero
+Escribe int cuadrado(int n) que retorne n*n.
+Lee N e imprime su cuadrado.
+
+Entrada: 9
+Salida esperada:
+  El cuadrado de 9 es 81.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E028 | Función con múltiples parámetros
+Escribe double calcularIMC(double peso, double altura)
+que retorne IMC = peso / (altura * altura).
+Lee peso y altura e imprime el IMC con 2 decimales.
+
+Entrada:
+  70.0
+  1.75
+Salida esperada:
+  IMC: 22.86
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E029 | Función booleana
+Escribe bool esPrimo(int n) que retorne true si n es primo.
+Úsala en main para imprimir todos los primos entre 1 y 50.
+
+Entrada: (ninguna)
+Salida esperada:
+  Primos entre 1 y 50:
+  2 3 5 7 11 13 17 19 23 29 31 37 41 43 47
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E030 | Parámetros por referencia — intercambio
+Escribe void intercambiar(int &a, int &b).
+Lee dos enteros, intercámbialos e imprime antes y después.
+
+Entrada:
+  5
+  12
+Salida esperada:
+  Antes:  a=5, b=12
+  Despues: a=12, b=5
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E031 | Función con múltiples salidas por referencia
+Escribe:
+  void calcularCirculo(double radio, double &area, double &per)
+que calcule y asigne área y perímetro. PI = 3.14159.
+En main lee el radio y muestra los resultados.
+
+Entrada: 7.0
+Salida esperada:
+  Radio: 7.00
+  Area: 153.94
+  Perimetro: 43.98
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E032 | Conversión de temperaturas con funciones
+Escribe:
+  double celsiusAFahrenheit(double c)
+  double fahrenheitACelsius(double f)
+  void mostrarConversion(double valor, char tipo)
+    si tipo == 'C' convierte a F e imprime
+    si tipo == 'F' convierte a C e imprime
+
+Entrada:
+  100.0
+  C
+Salida esperada:
+  100.0 C equivale a 212.0 F
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E033 | Sobrecarga — mayor de 2 y de 3 valores
+Sobrecarga la función:
+  double mayor(double a, double b)
+  double mayor(double a, double b, double c)
+
+Entrada:
+  4.5 9.2
+  3.1 7.8 5.5
+Salida esperada:
+  Mayor de 2: 9.20
+  Mayor de 3: 7.80
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E034 | Valor por defecto
+Escribe void imprimirLinea(int n = 20, char c = '-')
+que imprima n repeticiones del caracter c.
+Llámala de 3 formas: sin args, con n=10, con n=5 y c='*'.
+
+Entrada: (ninguna)
+Salida esperada:
+  --------------------
+  ----------
+  *****
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E035 | Funciones coordinadas — pares
+Escribe:
+  bool esPar(int n) → true si n es par
+  void imprimirPares(int inicio, int fin)
+    → imprime todos los pares en el rango
+
+Entrada:
+  1
+  20
+Salida esperada:
+  Pares entre 1 y 20:
+  2 4 6 8 10 12 14 16 18 20
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E036 | Función con string — invertir
+Escribe string invertir(string s) que retorne la cadena
+al revés, recorriendo el string de atrás hacia adelante.
+
+Entrada: hola
+Salida esperada:
+  Original: hola
+  Invertida: aloh
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E037 | Recursividad — factorial
+Escribe int factorial(int n) de forma RECURSIVA.
+  Caso base: factorial(0) = 1
+  Caso recursivo: factorial(n) = n * factorial(n-1)
+
+TRAZA A MANO antes de codificar: dibuja las llamadas
+para factorial(5) paso a paso.
+
+Entrada: 7
+Salida esperada:
+  7! = 5040
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E038 | Recursividad — Fibonacci
+Escribe int fibonacci(int n) de forma RECURSIVA.
+  fibonacci(0) = 0
+  fibonacci(1) = 1
+  fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)
+
+TRAZA A MANO: dibuja el árbol de llamadas para fibonacci(5).
+  fibonacci(5) llama a fibonacci(4) y fibonacci(3)
+  fibonacci(4) llama a fibonacci(3) y fibonacci(2)
+  ... y así sucesivamente
+
+ADVERTENCIA: la versión recursiva realiza llamadas repetidas.
+fibonacci(10) hace 177 llamadas. Para N > 30 puede tardar
+varios segundos — es normal, no es un error de tu código.
+Es una limitación conocida de la recursión ingenua.
+
+Entrada: 10
+Salida esperada:
+  fibonacci(10) = 55
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E039 | Menú con funciones separadas
+Crea un menú con 4 opciones usando funciones distintas:
+  1. Área de rectángulo
+  2. Área de triángulo
+  3. Área de círculo
+  4. Salir
+
+Entrada:
+  1
+  5.0 3.0
+  4
+Salida esperada:
+  === Calculadora de areas ===
+  1. Rectangulo
+  2. Triangulo
+  3. Circulo
+  4. Salir
+  Opcion: Base: 5.00  Altura: 3.00 -> Area: 15.00
+  === Calculadora de areas ===
+  1. Rectangulo
+  2. Triangulo
+  3. Circulo
+  4. Salir
+  Opcion: Hasta pronto.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E040 | Integración nivel 2 — calculadora de múltiples usos
+Crea un programa que use SOLO funciones (sin arreglos).
+Implementa:
+  double calcularPromedio3(double a, double b, double c)
+  double calcularAreaRectangulo(double base, double altura)
+  bool esMayorDeEdad(int edad)
+  string clasificarEdad(int edad)
+    → "Niño" (<12), "Adolescente" (12-17), "Adulto" (18+)
+
+En main lee los datos y llama a cada función mostrando resultados.
+
+Entrada:
+  80.0 90.0 85.0
+  6.0 4.0
+  20
+Salida esperada:
+  Promedio de notas: 85.00
+  Area del rectangulo: 24.00
+  Edad 20: Adulto (mayor de edad)
+----------------------------------------------------------------
+
+
+╔══════════════════════════════════════════════════════════════╗
+║        NIVEL 3 — ARREGLOS Y STRINGS  (E041–E055)           ║
+║    Arreglos 1D/2D · string · Búsqueda · Ordenamiento       ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ ES UN ARREGLO?
+--------------------
+Un arreglo (array) es una colección de variables del mismo
+tipo almacenadas en posiciones contiguas de memoria,
+accesibles mediante un índice numérico.
+
+  Analogía: un arreglo es como una hilera de casilleros
+  numerados. Todos guardan el mismo tipo de objeto.
+  El número del casillero es el ÍNDICE, que empieza en 0.
+
+  int notas[5] = {90, 75, 82, 68, 95};
+
+  Índice:   0    1    2    3    4
+  Valor:   90   75   82   68   95
+
+  notas[0] = 90   ← primer elemento
+  notas[4] = 95   ← último elemento (índice = tamaño - 1)
+  notas[5]  ← ERROR: fuera de rango (no existe)
+
+DECLARAR un arreglo:
+  int arr[10];              // arreglo de 10 enteros (sin inicializar)
+  double pesos[5] = {1.5, 2.0, 3.3, 0.8, 4.1};  // inicializado
+  int ceros[100] = {0};     // todos en 0
+
+RECORRER con for:
+  for (int i = 0; i < 5; i++) {
+      cout << notas[i] << " ";
+  }
+
+PASAR arreglo a función:
+  // El arreglo se pasa por referencia implícitamente.
+  // IMPORTANTE: el arreglo NO conoce su propio tamaño.
+  // Por eso siempre debes pasar n (el tamaño) como parámetro aparte.
+  // (En Python len(arr) funciona; en C++ no existe ese mecanismo.)
+
+  void imprimir(int arr[], int n) {
+      for (int i = 0; i < n; i++)
+          cout << arr[i] << " ";
+  }
+
+  // Llamada en main:
+  int datos[5] = {10, 20, 30, 40, 50};
+  imprimir(datos, 5);  // ← debes pasar 5 explícitamente
+
+ARREGLOS 2D (MATRICES):
+  int matriz[3][4];  // 3 filas, 4 columnas
+
+  Acceso: matriz[fila][columna]
+  matriz[0][0] = esquina superior izquierda
+  matriz[2][3] = esquina inferior derecha
+
+  for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 4; j++) {
+          cout << matriz[i][j] << " ";
+      }
+      cout << endl;
+  }
+
+STRINGS:
+  #include <string>
+  string s = "hola";
+  s.length()          → longitud (4)
+  s[0]                → primer carácter ('h')
+  s.substr(1, 2)      → "ol" (desde índice 1, 2 caracteres)
+  toupper(s[i])       → convierte carácter a mayúscula
+  tolower(s[i])       → convierte carácter a minúscula
+  getline(cin, s)     → lee una línea completa con espacios
+
+ORDENAMIENTO BURBUJA (Bubble Sort):
+  Idea: compara pares adyacentes y los intercambia si están
+  en el orden incorrecto. Repite hasta que no haya intercambios.
+
+  Traza COMPLETA para {5, 3, 8, 1} — cada intercambio visible:
+
+  Estado inicial: [ 5  3  8  1 ]
+
+  PASADA 1 (i=0):
+    j=0: compara 5 y 3 → 5 > 3 → intercambia → [ 3  5  8  1 ]
+    j=1: compara 5 y 8 → 5 < 8 → no intercambia → [ 3  5  8  1 ]
+    j=2: compara 8 y 1 → 8 > 1 → intercambia → [ 3  5  1  8 ]
+    El 8 quedó en su lugar final. ✓
+
+  PASADA 2 (i=1):
+    j=0: compara 3 y 5 → no intercambia → [ 3  5  1  8 ]
+    j=1: compara 5 y 1 → intercambia → [ 3  1  5  8 ]
+    El 5 quedó en su lugar. ✓
+
+  PASADA 3 (i=2):
+    j=0: compara 3 y 1 → intercambia → [ 1  3  5  8 ]
+    El 3 quedó en su lugar. ✓
+
+  Resultado final: [ 1  3  5  8 ] — ORDENADO.
+
+  Código:
+  for (int i = 0; i < n-1; i++) {
+      for (int j = 0; j < n-1-i; j++) {
+          if (arr[j] > arr[j+1]) {
+              int temp = arr[j];
+              arr[j] = arr[j+1];
+              arr[j+1] = temp;
+          }
+      }
+  }
+
+EJEMPLO RESUELTO:
+-----------------
+  Problema: Lee N enteros. Encuentra el promedio con 2 decimales.
+
+  #include <iostream>
+  #include <iomanip>
+  using namespace std;
+
+  double promedio(int arr[], int n) {
+      double suma = 0;
+      for (int i = 0; i < n; i++) suma += arr[i];
+      return suma / n;
+  }
+
+  int main() {
+      int n;
+      cin >> n;
+      int arr[100];
+      for (int i = 0; i < n; i++) cin >> arr[i];
+      cout << fixed << setprecision(2);
+      cout << "Promedio: " << promedio(arr, n) << endl;
+      return 0;
+  }
+
+  Entrada: 3   10 20 30
+  Salida:  Promedio: 20.00
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 3
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E041 | Arreglo en orden inverso
+Lee N enteros en un arreglo e imprímelos al revés.
+
+Entrada:
+  5
+  10 20 30 40 50
+Salida esperada:
+  50 40 30 20 10
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E042 | Búsqueda lineal
+Escribe int buscar(int arr[], int n, int valor) que retorne
+el índice del valor, o -1 si no existe.
+
+Entrada:
+  6
+  3 7 1 9 4 6
+  9
+Salida esperada:
+  Valor 9 encontrado en indice 3.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E043 | Máximo, mínimo y promedio
+Lee N enteros. Con funciones separadas calcula e imprime
+máximo, mínimo y promedio del arreglo.
+
+Entrada:
+  6
+  12 5 8 19 3 14
+Salida esperada:
+  Maximo: 19
+  Minimo: 3
+  Promedio: 10.17
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E044 | Ordenamiento burbuja
+TRAZA A MANO PRIMERO:
+Para el arreglo {64, 34, 25, 12, 22}, dibuja cada pasada
+del bubble sort en papel mostrando cómo cambia el arreglo.
+
+Luego implementa el algoritmo en C++.
+
+Entrada:
+  5
+  64 34 25 12 22
+Salida esperada:
+  Arreglo original: 64 34 25 12 22
+  Arreglo ordenado: 12 22 25 34 64
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+  E045 | Arreglo de strings numerado
+  Lee N nombres e imprímelos numerados.
+
+  Entrada:
+    3
+    Ana Luis Carla
+  Salida esperada:
+    1. Ana
+    2. Luis
+    3. Carla
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E046 | Frecuencia de elementos
+Lee N enteros (valores entre 1 y 10 inclusive).
+Cuenta cuántas veces aparece cada valor.
+Imprime solo los que aparecen al menos una vez.
+
+  Pista: usa un arreglo de contadores de tamaño 11
+  (índices 0-10, ignora el índice 0).
+
+Entrada:
+  8
+  3 1 4 1 5 9 2 3
+Salida esperada:
+  Valor 1: 2 veces
+  Valor 2: 1 veces
+  Valor 3: 2 veces
+  Valor 4: 1 veces
+  Valor 5: 1 veces
+  Valor 9: 1 veces
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E047 | Matriz — leer e imprimir
+Lee una matriz de N filas y M columnas e imprímela.
+
+Entrada:
+  2 3
+  1 2 3
+  4 5 6
+Salida esperada:
+  1  2  3
+  4  5  6
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E048 | Suma de filas y columnas
+Lee una matriz 3x3 e imprime la suma de cada fila
+y la suma de cada columna.
+
+Entrada:
+  1 2 3
+  4 5 6
+  7 8 9
+Salida esperada:
+  Suma fila 1: 6
+  Suma fila 2: 15
+  Suma fila 3: 24
+  Suma columna 1: 12
+  Suma columna 2: 15
+  Suma columna 3: 18
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E049 | Diagonal principal
+Lee una matriz cuadrada NxN e imprime los elementos
+de su diagonal principal y su suma.
+
+  La diagonal principal son los elementos donde fila == columna:
+  posiciones (0,0), (1,1), (2,2)...
+
+Entrada:
+  3
+  1 2 3
+  4 5 6
+  7 8 9
+Salida esperada:
+  Diagonal principal: 1 5 9
+  Suma: 15
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E050 | String — longitud y mayúsculas
+Lee una oración con getline.
+Imprime su longitud y la convierte a mayúsculas.
+
+Entrada:
+  hola mundo desde cpp
+Salida esperada:
+  Longitud: 20
+  En mayusculas: HOLA MUNDO DESDE CPP
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E051 | Contar palabras en oración
+Lee una oración con getline y cuenta las palabras
+(separadas por espacios simples).
+
+Entrada:
+  el cielo es azul y bonito
+Salida esperada:
+  Palabras: 6
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E052 | Palíndromo
+Lee una palabra e indica si es palíndromo.
+Un palíndromo se lee igual de izquierda a derecha que al revés.
+Ignora diferencia entre mayúsculas y minúsculas.
+
+  Ejemplos: "reconocer", "Ana", "kayak"
+
+Entrada: reconocer
+Salida esperada:
+  "reconocer" es palindromo.
+
+Entrada alternativa: hola
+Salida esperada:
+  "hola" no es palindromo.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E053 | Arreglos paralelos — mejor estudiante
+Lee N, luego N nombres (uno por línea) y N notas en arreglos
+paralelos. Imprime el nombre y nota del mejor estudiante.
+
+  Nota: lee cada nombre con cin >> nombre (separado por espacio
+  o salto de línea — cin ignora ambos automáticamente).
+
+Entrada:
+  4
+  Ana
+  Luis
+  Carla
+  Pedro
+  85 92 78 88
+Salida esperada:
+  Mejor estudiante: Luis con nota 92.00
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E054 | Búsqueda binaria
+TRAZA A MANO PRIMERO:
+Para el arreglo ordenado {2, 5, 8, 12, 16, 23, 38},
+dibuja paso a paso cómo la búsqueda binaria encuentra el 23:
+  - izquierda=0, derecha=6, medio=3 → arr[3]=12 < 23 → buscar derecha
+  - izquierda=4, derecha=6, medio=5 → arr[5]=23 == 23 → ENCONTRADO
+
+Luego implementa el algoritmo en C++.
+
+Entrada:
+  7
+  2 5 8 12 16 23 38
+  23
+Salida esperada:
+  Valor 23 encontrado en indice 5 (busqueda binaria).
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+  E055 | Integración — ranking de estudiantes
+  Lee N estudiantes con nombre y 3 notas cada uno.
+  Calcula el promedio de cada uno.
+  Imprime el ranking ordenado de mayor a menor promedio.
+
+  Entrada:
+    3
+    Ana 80 90 85
+    Luis 70 75 80
+    Carla 95 88 92
+  Salida esperada:
+    === Ranking de estudiantes ===
+    1. Carla  - Promedio: 91.67
+    2. Ana    - Promedio: 85.00
+    3. Luis   - Promedio: 75.00
+----------------------------------------------------------------
+
+
+╔══════════════════════════════════════════════════════════════╗
+║       NIVEL 4 — PUNTEROS Y REFERENCIAS  (E056–E068)        ║
+║       Punteros · Aritmética · Paso por puntero             ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ ES UN PUNTERO?
+--------------------
+Un puntero es una variable que guarda la DIRECCIÓN DE MEMORIA
+de otra variable. En lugar de guardar un valor (5, "hola"),
+guarda una ubicación (0x7fff1234).
+
+  Analogía: si una variable es una CASA con un número,
+  un puntero es un PAPEL que tiene anotada la DIRECCIÓN
+  de esa casa. El papel no es la casa — solo te dice dónde está.
+
+  Casa (variable): en la calle 0x7fff, vive el número 5
+  Papel (puntero): "la dirección de la casa es 0x7fff"
+
+LOS TRES SÍMBOLOS QUE CONFUNDEN:
+----------------------------------
+  int x = 5;       // x es una variable entera con valor 5
+
+  int* p = &x;     // p es un PUNTERO (declaración con *)
+                   // &x significa "dame la dirección de x"
+
+  *p = 99;         // * en USO = desreferenciar
+                   // "ve a la dirección que tiene p y cambia el valor"
+
+  RESUMEN:
+    * en declaración (int* p)  → "p es un puntero"
+    & en uso (&x)              → "dame la dirección de x"
+    * en uso (*p)              → "ve a la dirección de p y mira adentro"
+
+TRAZA A MANO:
+  int x = 5;
+  int* p = &x;
+
+  Memoria:
+  ┌────────┬───────┐     ┌────────┬──────────┐
+  │ direc  │ valor │     │ direc  │  valor   │
+  ├────────┼───────┤     ├────────┼──────────┤
+  │ 0x1000 │   5   │ ←x  │ 0x1008 │  0x1000  │ ←p
+  └────────┴───────┘     └────────┴──────────┘
+
+  cout << x;   → 5         (valor de x)
+  cout << &x;  → 0x1000    (dirección de x)
+  cout << p;   → 0x1000    (p guarda esa dirección)
+  cout << *p;  → 5         (va a 0x1000 y lee el valor)
+
+  *p = 99;     → cambia el valor en 0x1000
+  cout << x;   → 99        (x cambió porque p apuntaba a x)
+
+ARITMÉTICA DE PUNTEROS:
+------------------------
+  Un puntero puede avanzar en memoria:
+  p + 1  → apunta al SIGUIENTE elemento del mismo tipo
+  p + 2  → dos elementos adelante
+
+  Con arreglos (el nombre del arreglo ES un puntero al primer elemento):
+  int arr[] = {10, 20, 30, 40};
+  int* p = arr;   // p apunta al primer elemento
+
+  *(p + 0) = 10   equivale a   arr[0]
+  *(p + 1) = 20   equivale a   arr[1]
+  *(p + 2) = 30   equivale a   arr[2]
+
+PUNTERO NULO:
+  int* p = nullptr;  // puntero que no apunta a nada
+  // Siempre inicializa punteros a nullptr si no apuntan a algo válido
+  // Usar un puntero no inicializado → comportamiento indefinido
+
+PUNTERO A FUNCIÓN:
+------------------
+  Al igual que puedes tener un puntero a una variable,
+  puedes tener un puntero que apunte a una FUNCIÓN.
+  Útil para pasar funciones como argumentos o hacer callbacks.
+
+  Sintaxis:
+    tipo_retorno (*nombre_puntero)(tipo_param1, tipo_param2);
+
+  Ejemplo:
+    int sumar(int a, int b) { return a + b; }
+    int restar(int a, int b) { return a - b; }
+
+    // Declarar puntero a función que recibe 2 int y retorna int
+    int (*operacion)(int, int);
+
+    operacion = sumar;        // apunta a sumar
+    cout << operacion(3, 2);  // imprime 5
+
+    operacion = restar;       // ahora apunta a restar
+    cout << operacion(3, 2);  // imprime 1
+
+  El puntero a función NO necesita & al asignar (el nombre
+  de la función ya es su dirección).
+
+DIFERENCIA PUNTERO vs REFERENCIA:
+  Referencia (&):
+    - Es un alias (segundo nombre) para la misma variable
+    - No puede ser null
+    - No puede redirigirse a otra variable
+    - Sintaxis más limpia al usar
+
+  Puntero (*):
+    - Guarda una dirección, puede cambiar a qué apunta
+    - Puede ser nullptr
+    - Más flexible pero más peligroso
+
+EJEMPLO RESUELTO:
+-----------------
+  #include <iostream>
+  using namespace std;
+
+  void triplicar(int* p) {
+      *p = *p * 3;  // modifica el valor en la dirección apuntada
+  }
+
+  int main() {
+      int x = 7;
+      cout << "Antes: " << x << endl;     // 7
+
+      triplicar(&x);   // pasamos la DIRECCIÓN de x
+
+      cout << "Despues: " << x << endl;  // 21
+      return 0;
+  }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 4
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E056 | TRAZA — Puntero básico
+PRIMERO haz la traza a mano en papel:
+
+  int x = 42;
+  int* p = &x;
+
+  Dibuja el diagrama de memoria con las casillas de x y p,
+  sus direcciones inventadas (ej: 0x100, 0x108) y sus valores.
+
+  Luego responde qué imprimiría cada línea:
+    cout << x;    → ___
+    cout << &x;   → ___ (escribe "dirección de x")
+    cout << p;    → ___
+    cout << *p;   → ___
+
+LUEGO implementa el programa en C++.
+
+Entrada: (ninguna)
+Salida esperada:
+  Valor de x: 42
+  Direccion de x: [direccion de memoria]
+  Valor de p: [misma direccion]
+  Valor de *p: 42
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E057 | Modificar a través de puntero
+TRAZA A MANO:
+  int x = 10;
+  int* p = &x;
+  *p = 99;
+  → ¿Cuánto vale x ahora? ¿Por qué?
+
+Implementa: usa solo el puntero (no x directamente)
+para cambiar el valor de x a 99.
+
+Entrada: (ninguna)
+Salida esperada:
+  Antes: 10
+  Despues: 99
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E058 | Paso por puntero — duplicar
+Escribe void duplicar(int* p) que duplique el valor apuntado.
+Lee un entero, duplícalo con la función.
+
+Entrada: 7
+Salida esperada:
+  Antes: 7
+  Despues: 14
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E059 | Aritmética de punteros — recorrer arreglo
+Declara un arreglo de 5 enteros.
+Recórrelo usando SOLO aritmética de punteros.
+NO uses índices con corchetes [].
+
+  Usa: *(arr + i) en lugar de arr[i]
+
+Entrada: 10 20 30 40 50
+Salida esperada:
+  Elemento 0: 10
+  Elemento 1: 20
+  Elemento 2: 30
+  Elemento 3: 40
+  Elemento 4: 50
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E060 | Intercambio con punteros
+Escribe void intercambiar(int* a, int* b) usando punteros.
+Lee dos enteros e intercámbialos.
+
+Entrada:
+  15
+  40
+Salida esperada:
+  Antes:  a=15, b=40
+  Despues: a=40, b=15
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E061 | Longitud de cadena con puntero
+En C++ existe el tipo char[] (arreglo de caracteres al estilo C),
+distinto de string. Se declara así:
+  char palabra[100];   // espacio para hasta 99 caracteres + '\0'
+  cin >> palabra;      // lee hasta el primer espacio
+
+El último carácter es siempre '\0' (caracter nulo) que marca el fin.
+Un puntero puede recorrerlo hasta encontrar '\0'.
+
+Lee una palabra con char array.
+Calcula su longitud recorriendo el puntero hasta '\0'.
+NO uses strlen ni string::length().
+
+  char* p = palabra;
+  int len = 0;
+  while (*p != '\0') { len++; p++; }
+
+Entrada: programacion
+Salida esperada:
+  Palabra: programacion
+  Longitud (manual): 12
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E062 | Función que retorna puntero
+Escribe int* encontrarMaximo(int arr[], int n) que retorne
+un puntero al elemento mayor.
+Usa ese puntero para duplicar el máximo.
+
+Entrada:
+  5
+  3 8 1 6 4
+Salida esperada:
+  Maximo encontrado: 8
+  Arreglo tras duplicar el maximo: 3 16 1 6 4
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E063 | Referencia vs puntero — comparación
+TRAZA A MANO primero:
+  ¿Cuál es la diferencia en memoria entre:
+    void f1(int &n)  { n = n * 3; }
+    void f2(int* p)  { *p = *p * 3; }
+  Dibuja cómo queda x en cada caso.
+
+Luego implementa las dos funciones.
+Lee un entero y aplica f1, luego f2 al resultado.
+
+Entrada: 5
+Salida esperada:
+  Valor inicial: 5
+  Despues de triplicarRef: 15
+  Despues de triplicarPtr: 45
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E064 | Puntero a puntero
+TRAZA A MANO:
+  int x = 100;
+  int* p = &x;
+  int** pp = &p;
+
+  Dibuja 3 casillas: x, p y pp con sus direcciones y valores.
+  ¿Cuántas "flechas" necesitas seguir para llegar al valor 100
+  partiendo de pp?
+
+Luego implementa e imprime x usando x, *p y **pp.
+
+Entrada: (ninguna)
+Salida esperada:
+  x   = 100
+  *p  = 100
+  **pp = 100
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E065 | Llenar arreglo con función
+Escribe void llenarCuadrados(int* arr, int n) que llene
+el arreglo con los cuadrados de sus índices: arr[i] = i*i.
+
+Entrada: 6
+Salida esperada:
+  0 1 4 9 16 25
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E066 | Buscar con puntero y nullptr
+Escribe int* buscarPtr(int* arr, int n, int valor) que
+retorne puntero al elemento o nullptr si no existe.
+Valida el resultado antes de usarlo en main.
+
+Entrada:
+  5
+  10 25 38 47 60
+  38
+Salida esperada:
+  Valor 38 encontrado.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E067 | Puntero a función
+Declara un puntero a función: int (*op)(int, int)
+Implementa las funciones: sumar, restar, multiplicar.
+Usa un menú numérico para asignar el puntero:
+  1 → sumar
+  2 → restar
+  3 → multiplicar
+
+Lee la opción y los dos operandos. Asigna el puntero
+con if/else y llámalo para imprimir el resultado.
+
+Entrada:
+  1
+  10 4
+Salida esperada:
+  Resultado: 14
+
+Entrada alternativa:
+  2
+  10 4
+Salida esperada:
+  Resultado: 6
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E068 | Integración punteros
+Con funciones que reciben punteros:
+  - Lee N enteros en un arreglo
+  - Calcula suma y promedio
+  - Invierte el arreglo IN-PLACE (en el mismo arreglo)
+
+Entrada:
+  5
+  1 2 3 4 5
+Salida esperada:
+  Suma: 15
+  Promedio: 3.00
+  Invertido: 5 4 3 2 1
+----------------------------------------------------------------
+
+
+╔══════════════════════════════════════════════════════════════╗
+║        NIVEL 5 — MEMORIA DINÁMICA  (E069–E080)             ║
+║        new · delete · Arreglos dinámicos · Leaks           ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STACK vs HEAP — Las dos zonas de memoria:
+------------------------------------------
+  STACK (pila):
+  - Memoria automática: se reserva al declarar, se libera al salir
+    del bloque de código
+  - Rápida, pero limitada (típicamente 1-8 MB)
+  - Las variables locales viven aquí
+
+  HEAP (montículo):
+  - Memoria manual: TÚ la reservas y TÚ la liberas
+  - Mucho más grande (limitada solo por la RAM)
+  - Persiste hasta que explícitamente la liberas con delete
+
+  Analogía:
+  - Stack = tu escritorio: rápido de usar pero pequeño.
+    Al terminar tu turno, se limpia solo.
+  - Heap = la bodega del edificio: grande, pero tienes que
+    ir a buscar y regresar lo que usas. Si olvidas devolver
+    algo, ese espacio queda ocupado para siempre (memory leak).
+
+new Y delete:
+-------------
+  // Reservar un solo valor
+  int* p = new int;        // reserva espacio para un int
+  int* p = new int(5);     // reserva e inicializa con 5
+  delete p;                // libera esa memoria
+  p = nullptr;             // buena práctica: poner en null
+
+  // Reservar un arreglo
+  int* arr = new int[10];  // reserva 10 enteros consecutivos
+  delete[] arr;            // libera el arreglo (con [])
+  arr = nullptr;
+
+  REGLA DE ORO:
+  - Por cada new → exactamente un delete
+  - Por cada new[] → exactamente un delete[]
+  - NUNCA uses delete[] con new simple ni viceversa
+
+ERRORES COMUNES:
+----------------
+  MEMORY LEAK — olvidar liberar memoria:
+    int* p = new int(5);
+    p = new int(10);   ← el 5 perdió su puntero, NUNCA se libera
+    delete p;          ← solo libera el 10
+
+  DANGLING POINTER — usar puntero después de delete:
+    int* p = new int(42);
+    delete p;
+    cout << *p;   ← ERROR: memoria ya liberada, comportamiento indefinido
+    // Solución: p = nullptr; y validar antes de usar
+
+  DOUBLE FREE — liberar dos veces:
+    int* p = new int(5);
+    delete p;
+    delete p;   ← ERROR: doble liberación
+
+TRAZA DE MEMORIA DINÁMICA:
+  int* p = new int(7);
+  
+  Stack:          Heap:
+  ┌────┬────────┐ ┌────┬───┐
+  │ p  │ 0x2000 │ │0x2000│ 7 │
+  └────┴────────┘ └────┴───┘
+  
+  delete p; → el bloque 0x2000 queda libre
+  p = nullptr;
+  
+  Stack:          Heap:
+  ┌────┬────────┐ ┌────┬───┐
+  │ p  │nullptr │ │0x2000│ ? │ (libre)
+  └────┴────────┘ └────┴───┘
+
+MATRIZ DINÁMICA CON int**:
+--------------------------
+  Una matriz dinámica es un arreglo de punteros, donde cada
+  puntero apunta a otro arreglo (una fila).
+
+  int** mat = new int*[filas];     // arreglo de punteros a filas
+  for (int i = 0; i < filas; i++)
+      mat[i] = new int[columnas];  // cada fila es un arreglo
+
+  Acceso: mat[fila][columna]  — igual que una matriz estática.
+
+  Liberar (en orden inverso):
+  for (int i = 0; i < filas; i++)
+      delete[] mat[i];   // liberar cada fila
+  delete[] mat;          // liberar el arreglo de punteros
+
+  Diagrama en memoria:
+  mat → [ ptr0 | ptr1 | ptr2 ]
+          ↓       ↓       ↓
+       [fila0] [fila1] [fila2]
+
+  Cada fila es un arreglo independiente en el heap.
+
+EJEMPLO RESUELTO (arreglo dinámico básico):
+-------------------------------------------
+  #include <iostream>
+  using namespace std;
+
+  int main() {
+      int n;
+      cout << "Cuantos elementos? ";
+      cin >> n;
+
+      int* arr = new int[n];   // tamaño decidido en ejecucion
+
+      cout << "Ingresa " << n << " enteros: ";
+      for (int i = 0; i < n; i++) cin >> arr[i];
+
+      cout << "Arreglo: ";
+      for (int i = 0; i < n; i++) cout << arr[i] << " ";
+      cout << endl;
+
+      delete[] arr;
+      arr = nullptr;
+      cout << "Memoria liberada." << endl;
+      return 0;
+  }
+
+  Entrada: 3   10 20 30
+  Salida:  Arreglo: 10 20 30
+           Memoria liberada.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 5
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E069 | new y delete básico
+TRAZA A MANO:
+  Dibuja el estado del stack y del heap en cada línea:
+  int* p = new int(99);
+  cout << *p;
+  delete p;
+  p = nullptr;
+
+Luego implementa el programa. Imprime el valor y la dirección.
+
+Entrada: (ninguna)
+Salida esperada:
+  Valor: 99
+  Direccion: [direccion de memoria]
+  Memoria liberada correctamente.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E070 | Arreglo dinámico
+Lee N en tiempo de ejecución.
+Reserva un arreglo dinámico con new.
+Llénalo, imprímelo y libéralo con delete[].
+
+Entrada:
+  4
+  10 20 30 40
+Salida esperada:
+  Arreglo: 10 20 30 40
+  Memoria liberada.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E071 | Extender arreglo dinámico
+Tienes un arreglo dinámico de N elementos.
+El usuario quiere agregar uno más.
+Crea un nuevo arreglo de tamaño N+1, copia los datos,
+agrega el nuevo elemento, libera el viejo.
+
+Entrada:
+  3
+  5 10 15
+  20
+Salida esperada:
+  Original: 5 10 15
+  Extendido: 5 10 15 20
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E072 | Función que crea y retorna arreglo dinámico
+Escribe int* crearArreglo(int n, int valorInicial)
+que reserve un arreglo de n enteros, los inicialice con
+valorInicial y lo retorne.
+El llamador es responsable de liberarlo con delete[].
+
+Entrada:
+  5
+  7
+Salida esperada:
+  Arreglo de 5 elementos inicializados en 7:
+  7 7 7 7 7
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E073 | ANÁLISIS — Detectar y corregir memory leak
+El siguiente código tiene un memory leak. Analízalo,
+identifica el problema y escribe la versión corregida
+con comentarios explicando qué estaba mal.
+
+  CÓDIGO CON ERROR:
+  -----------------
+  int* a = new int(5);
+  int* b = new int[10];
+  a = new int(20);    // ← aquí ocurre el leak
+  delete a;
+  delete[] b;
+
+  Preguntas a responder A MANO:
+  1. ¿Qué valor pierde su puntero en la línea señalada?
+  2. ¿Ese bloque de memoria se libera en algún momento?
+  3. ¿Cómo se corrige?
+
+Salida esperada del programa corregido:
+  Valor final de a: 20
+  Memoria liberada correctamente.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E074 | Matriz dinámica
+TRAZA A MANO:
+  Dibuja cómo se crea una matriz dinámica de 3 filas:
+  int** mat = new int*[3];
+  for (int i = 0; i < 3; i++)
+      mat[i] = new int[4];
+
+  ¿Cuántos new se ejecutan en total?
+  ¿Cuántos delete necesitas?
+
+Luego implementa: crea la matriz, llena con mat[i][j] = i*j,
+imprímela y libérala completamente.
+
+Entrada: 3 4
+Salida esperada:
+  0  0  0  0
+  0  1  2  3
+  0  2  4  6
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E075 | Stack vs Heap — comparación directa
+Declara la misma variable de dos formas:
+  int a = 42;            // stack
+  int* b = new int(42);  // heap
+
+Imprime ambas. Modifica solo b a 99. Imprime de nuevo.
+Libera b.
+
+Entrada: (ninguna)
+Salida esperada:
+  Stack: 42    Heap: 42
+  Stack: 42    Heap: 99
+  Heap liberado.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E076 | Sistema con funciones dinámicas
+Implementa y encadena estas funciones:
+  int* leerArregloDinamico(int &n)
+  void imprimirArreglo(int* arr, int n)
+  double promedioArreglo(int* arr, int n)
+  void liberarArreglo(int* &arr)
+
+Nota: liberarArreglo recibe por referencia para poner nullptr.
+
+Entrada:
+  4
+  8 3 6 9
+Salida esperada:
+  Arreglo: 8 3 6 9
+  Promedio: 6.50
+  Memoria liberada.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E077 | Buscar con nullptr como centinela
+Escribe int* buscarDinamico(int* arr, int n, int val)
+que retorne puntero al elemento o nullptr.
+En main valida el resultado ANTES de desreferenciar.
+
+Entrada:
+  5
+  4 8 15 16 23
+  15
+Salida esperada:
+  Elemento encontrado: 15
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E078 | Arreglo dinámico de strings ordenado
+Reserva dinámicamente un arreglo de N strings.
+Léelos, ordénalos alfabéticamente, imprímelos. Libera.
+
+Entrada:
+  4
+  pera
+  manzana
+  uva
+  banana
+Salida esperada:
+  Ordenado:
+  banana
+  manzana
+  pera
+  uva
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E079 | ANÁLISIS — Dangling pointer
+Analiza este código, identifica el error y corrígelo:
+
+  CÓDIGO CON ERROR:
+  -----------------
+  int* p = new int(10);
+  delete p;
+  cout << *p;   // ← ERROR: dangling pointer
+
+  Preguntas a responder A MANO:
+  1. ¿Qué es un dangling pointer?
+  2. ¿Por qué es peligroso?
+  3. ¿Cómo evitarlo?
+
+Salida esperada del programa corregido:
+  Valor antes de delete: 10
+  Puntero puesto en nullptr. Acceso bloqueado.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E080 | Integración — registro dinámico de estudiantes
+  - Lee N (cantidad de estudiantes)
+  - Reserva dinámicamente: string* nombres y double* notas
+  - Lee los datos (un nombre y una nota por línea: Ana 88)
+  - Ordena el ranking de mayor a menor nota usando bubble sort.
+    IMPORTANTE: cuando intercambies notas, intercambia también
+    los nombres en la misma posición para mantener la coherencia
+    entre los dos arreglos paralelos.
+  - Imprime el ranking ordenado
+  - Libera toda la memoria con delete[]
+
+Entrada:
+  3
+  Ana 88
+  Luis 75
+  Carla 95
+Salida esperada:
+  === Ranking ===
+  1. Carla  - 95.00
+  2. Ana    - 88.00
+  3. Luis   - 75.00
+  Memoria liberada.
+----------------------------------------------------------------
+
+
+╔══════════════════════════════════════════════════════════════╗
+║           NIVEL 6 — ARCHIVOS  (E081–E088)                  ║
+║           fstream · Lectura · Escritura · Búsqueda         ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ SON LOS ARCHIVOS EN C++?
+------------------------------
+Hasta ahora, los datos de tus programas desaparecen al cerrarlo.
+Los archivos permiten guardar datos de forma PERSISTENTE en disco.
+
+  Analogía: la memoria RAM es como tu memoria de corto plazo —
+  al dormir (apagar el programa) todo desaparece.
+  Un archivo en disco es como una libreta — lo escrito persiste.
+
+LIBRERÍA: #include <fstream>
+TIPOS:
+  ofstream → output file stream → para ESCRIBIR en un archivo
+  ifstream → input file stream  → para LEER de un archivo
+  fstream  → ambas operaciones
+
+ESCRIBIR en un archivo:
+  ofstream archivo("datos.txt");    // crea o sobreescribe
+  if (archivo.is_open()) {
+      archivo << "Hola mundo" << endl;
+      archivo << 42 << endl;
+      archivo.close();
+  }
+
+  APPEND (agregar sin borrar):
+  ofstream archivo("datos.txt", ios::app);
+
+LEER de un archivo:
+  ifstream archivo("datos.txt");
+  string linea;
+  while (getline(archivo, linea)) {  // lee línea por línea
+      cout << linea << endl;
+  }
+  archivo.close();
+
+  Leer palabra por palabra:
+  string palabra;
+  while (archivo >> palabra) {
+      cout << palabra << endl;
+  }
+
+VERIFICAR apertura — SIEMPRE:
+  if (!archivo.is_open()) {
+      cout << "Error: no se pudo abrir el archivo." << endl;
+      return 1;
+  }
+
+FIN DE ARCHIVO:
+  archivo.eof()  → true si llegó al final del archivo
+  El while con getline o >> detecta el fin automáticamente.
+
+EJEMPLO RESUELTO:
+-----------------
+  Problema: Guardar 3 nombres en archivo y leerlos de vuelta.
+
+  // ESCRIBIR
+  ofstream salida("nombres.txt");
+  salida << "Ana" << endl;
+  salida << "Luis" << endl;
+  salida << "Carla" << endl;
+  salida.close();
+
+  // LEER
+  ifstream entrada("nombres.txt");
+  string nombre;
+  int i = 1;
+  while (entrada >> nombre) {
+      cout << i << ". " << nombre << endl;
+      i++;
+  }
+  entrada.close();
+
+  Salida:
+    1. Ana
+    2. Luis
+    3. Carla
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 6
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E081 | Escribir en archivo
+Crea el archivo "saludo.txt" y escribe estas 3 líneas:
+  Linea 1: Hola desde C++
+  Linea 2: Aprendiendo archivos
+  Linea 3: fstream es poderoso
+Imprime en pantalla confirmación de éxito.
+
+Entrada: (ninguna)
+Salida en pantalla:
+  Archivo "saludo.txt" creado.
+  3 lineas escritas.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E082 | Leer línea por línea
+PARTE 1 (a mano): Escribe el código que crearía un archivo
+"poema.txt" con estas 4 líneas exactas:
+  Las rosas son rojas
+  El mar es profundo
+  El codigo es logica
+  C++ es poderoso
+
+PARTE 2 (implementar): Escribe el programa completo que:
+  1. Crea el archivo "poema.txt" con esas 4 líneas.
+  2. Lo lee de vuelta e imprime cada línea numerada.
+
+Entrada: (ninguna)
+Salida esperada:
+  1: Las rosas son rojas
+  2: El mar es profundo
+  3: El codigo es logica
+  4: C++ es poderoso
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E083 | Agregar al archivo (append)
+Lee una oración del teclado y agrégala al final del archivo
+"registro.txt" sin borrar el contenido anterior (usa ios::app).
+
+PARTE 1 (a mano): escribe qué contendría "registro.txt"
+si ejecutaras el programa 3 veces con estas entradas:
+  Ejecución 1: "Primera entrada del dia"
+  Ejecución 2: "Segunda entrada del dia"
+  Ejecución 3: "Tercera entrada del dia"
+
+PARTE 2 (implementar): el programa completo que lee
+una oración con getline y la agrega al archivo.
+
+Entrada: Primera entrada del dia
+Salida en pantalla:
+  Linea agregada a "registro.txt".
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E084 | Contar líneas y palabras
+PARTE 1 (a mano): escribe el código que crearía el archivo
+"texto.txt" con este contenido exacto:
+  La programacion es el arte de resolver problemas
+  C++ es un lenguaje potente y rapido
+  Aprender a programar abre muchas puertas
+
+PARTE 2 (implementar): Escribe el programa completo que:
+  1. Crea el archivo "texto.txt" con esas 3 líneas.
+  2. Lo lee y cuenta cuántas líneas y palabras tiene.
+
+  Pista: abre el archivo DOS veces con dos ifstream
+  distintos: uno para contar líneas (con getline) y
+  otro para contar palabras (con >>).
+
+Entrada: (ninguna — el archivo lo crea el programa)
+Salida esperada:
+  Lineas: 3
+  Palabras: 22
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E085 | Guardar y leer registros
+Lee N estudiantes (nombre y nota) del teclado.
+Guárdalos en "estudiantes.txt". Luego léelos e imprímelos.
+
+Entrada:
+  3
+  Ana 90
+  Luis 78
+  Carla 85
+Salida esperada:
+  Guardados 3 registros en "estudiantes.txt".
+  Leyendo archivo:
+  Ana - 90.00
+  Luis - 78.00
+  Carla - 85.00
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E086 | Buscar en archivo
+REQUISITO PREVIO: ejecuta E085 primero para generar
+el archivo "estudiantes.txt". Sin ese archivo el programa
+no puede abrir nada y fallará.
+
+Lee el archivo "estudiantes.txt" (generado en E085).
+Pide un nombre al usuario y búscalo línea por línea.
+
+Entrada: Luis
+Salida esperada:
+  Estudiante encontrado: Luis - 78.00
+
+Entrada alternativa: Pedro
+Salida esperada:
+  Estudiante no encontrado.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E087 | Copiar archivo
+Lee "estudiantes.txt" y crea una copia en "respaldo.txt".
+Reporta cuántas líneas fueron copiadas.
+
+Entrada: (archivo estudiantes.txt)
+Salida esperada:
+  Copiadas [N] lineas a "respaldo.txt".
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E088 | Integración — sistema de registro de notas
+  1. Lee N nombres y notas del teclado
+  2. Guárdalos en "notas.txt"
+  3. Los lee de vuelta
+  4. Calcula e imprime el promedio
+  5. Guarda el promedio al final del archivo
+
+Entrada:
+  4
+  Ana 88
+  Luis 75
+  Carla 95
+  Pedro 82
+Salida esperada:
+  Datos guardados en "notas.txt".
+  Promedio del grupo: 85.00
+  Promedio guardado en el archivo.
+----------------------------------------------------------------
+
+
+╔══════════════════════════════════════════════════════════════╗
+║     NIVEL 7 — PROGRAMACIÓN ORIENTADA A OBJETOS (E089–E100) ║
+║     Clases · Encapsulamiento · Herencia · Polimorfismo     ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEORÍA — Lee esto ANTES de resolver los ejercicios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ ES LA POO?
+----------------
+La Programación Orientada a Objetos organiza el código en
+OBJETOS que combinan DATOS (atributos) y COMPORTAMIENTO
+(métodos) en una sola unidad.
+
+  Analogía: un objeto es como un auto.
+  - Atributos: color, marca, velocidad, combustible
+  - Métodos: acelerar(), frenar(), cargarCombustible()
+  El auto sabe qué hace y tiene sus propios datos.
+
+VOCABULARIO CLAVE:
+------------------
+  Clase     → plantilla o molde que define el objeto
+  Objeto    → instancia concreta de una clase
+  Atributo  → dato que pertenece al objeto (variable miembro)
+  Método    → función que pertenece al objeto
+  Constructor → método especial que se llama al crear el objeto
+  Destructor  → método especial que se llama al destruir el objeto
+  this      → puntero al objeto actual
+
+ENCAPSULAMIENTO:
+----------------
+  Ocultar los detalles internos y exponer solo lo necesario.
+
+  private: → solo accesible desde dentro de la clase
+  public:  → accesible desde cualquier parte del programa
+  protected: → accesible desde la clase y sus derivadas
+
+  class Persona {
+  private:
+      string nombre;  // nadie puede acceder directamente
+      int edad;
+
+  public:
+      // Constructor
+      Persona(string n, int e) : nombre(n), edad(e) {}
+
+      // Getter: acceso de lectura controlado
+      string getNombre() { return nombre; }
+
+      // Setter: acceso de escritura con validación
+      void setEdad(int e) {
+          if (e >= 0 && e <= 150) edad = e;
+      }
+
+      void mostrar() {
+          cout << nombre << ", " << edad << " años" << endl;
+      }
+  };
+
+  // Uso:
+  Persona p("Ana", 25);
+  p.mostrar();              // Ana, 25 años
+  // p.nombre = "X";       ← ERROR: nombre es private
+  p.setEdad(26);            // correcto, pasa por el setter
+
+CONSTRUCTOR y DESTRUCTOR:
+--------------------------
+  Constructor: mismo nombre que la clase, sin tipo de retorno.
+  Se ejecuta automáticamente al crear el objeto.
+
+  LISTA DE INICIALIZACIÓN — la forma recomendada de inicializar
+  atributos en el constructor (más eficiente que asignar dentro):
+
+  // Sin lista de inicialización (funciona pero menos eficiente):
+  Persona(string n, int e) {
+      nombre = n;
+      edad = e;
+  }
+
+  // CON lista de inicialización (recomendado):
+  Persona(string n, int e) : nombre(n), edad(e) {
+      // el : indica que siguen inicializaciones
+      // nombre(n) significa "inicializa nombre con el valor de n"
+      // las inicializaciones se separan con coma
+  }
+
+  La sintaxis es: NombreClase(params) : attr1(val1), attr2(val2) {}
+
+  Destructor: nombre de la clase con ~ al inicio.
+  Se ejecuta automáticamente al destruir el objeto.
+  NUNCA tiene parámetros ni tipo de retorno.
+
+  class Sensor {
+  public:
+      string nombre;
+      Sensor(string n) : nombre(n) {
+          cout << nombre << " activado." << endl;
+      }
+      ~Sensor() {
+          cout << nombre << " desactivado." << endl;
+      }
+  };
+
+HERENCIA:
+---------
+  Una clase HIJA hereda atributos y métodos de la clase PADRE.
+  Permite reutilizar código y especializar comportamiento.
+
+  class Animal {           // clase base (padre)
+  public:
+      string nombre;
+      virtual void sonido() { cout << "..." << endl; }
+  };
+
+  class Perro : public Animal {   // clase derivada (hija)
+  public:
+      void sonido() override { cout << "Guau!" << endl; }
+  };
+
+  - virtual   → permite que la hija redefina el método
+  - override  → indica explícitamente que redefine (buena práctica)
+
+POLIMORFISMO:
+-------------
+  Un puntero de tipo PADRE puede apuntar a un objeto HIJO.
+  Cuando llamas un método virtual, C++ ejecuta la versión
+  correcta según el tipo REAL del objeto.
+
+  Animal* a1 = new Perro();
+  Animal* a2 = new Gato();
+
+  a1->sonido();  → "Guau!"   (ejecuta la de Perro)
+  a2->sonido();  → "Miau!"   (ejecuta la de Gato)
+
+  Sin virtual, ambas ejecutarían "..." (la del padre).
+  Con virtual, cada objeto sabe qué versión usar.
+
+CLASE ABSTRACTA:
+----------------
+  Clase que tiene al menos un método virtual PURO (= 0).
+  No se puede instanciar directamente — solo sirve como base.
+
+  class Figura {
+  public:
+      virtual double calcularArea() = 0;    // método virtual puro
+      virtual double calcularPerimetro() = 0;
+  };
+
+  class Circulo : public Figura {
+      double radio;
+  public:
+      Circulo(double r) : radio(r) {}
+      double calcularArea() override { return 3.14159 * radio * radio; }
+      double calcularPerimetro() override { return 2 * 3.14159 * radio; }
+  };
+
+FUNCIÓN FRIEND (amiga):
+-----------------------
+  Una función friend es una función EXTERNA a la clase que tiene
+  acceso a sus miembros privados.
+  Se usa frecuentemente para sobrecargar el operador <<
+  (que pertenece a ostream, no a tu clase).
+
+  class Vector2D {
+  private:
+      double x, y;
+  public:
+      Vector2D(double x, double y) : x(x), y(y) {}
+
+      // Declarar friend: esta función externa accede a x e y
+      friend ostream& operator<<(ostream& out, const Vector2D& v);
+  };
+
+  // Definición FUERA de la clase:
+  ostream& operator<<(ostream& out, const Vector2D& v) {
+      out << fixed << setprecision(2);  // formato 2 decimales
+      out << "(" << v.x << ", " << v.y << ")";
+      return out;  // siempre retorna out para encadenamiento
+  }
+
+  // Uso:
+  Vector2D v(3.0, 4.0);
+  cout << v << endl;   // imprime: (3.00, 4.00)
+
+  IMPORTANTE: operator<< SIEMPRE debe ser friend cuando
+  trabaja con cout, porque << pertenece a ostream, no a tu clase.
+  Nota: también necesitas #include <iomanip> para fixed/setprecision.
+
+EJEMPLO RESUELTO:
+-----------------
+  Programa completo con herencia y polimorfismo:
+
+  #include <iostream>
+  using namespace std;
+
+  class Vehiculo {
+  private:
+      string marca;        // ← private: encapsulado correctamente
+  public:
+      Vehiculo(string m) : marca(m) {}
+      string getMarca() { return marca; }  // getter
+
+      // virtual + destructor virtual: SIEMPRE en clases base
+      // con polimorfismo para evitar memory leaks al hacer delete
+      virtual ~Vehiculo() {}
+
+      virtual void describir() {
+          cout << marca << ": vehiculo generico" << endl;
+      }
+  };
+
+  class Auto : public Vehiculo {
+  private:
+      int puertas;
+  public:
+      Auto(string m, int p) : Vehiculo(m), puertas(p) {}
+      void describir() override {
+          cout << getMarca() << ": auto con " << puertas
+               << " puertas" << endl;
+      }
+  };
+
+  class Moto : public Vehiculo {
+  public:
+      Moto(string m) : Vehiculo(m) {}
+      void describir() override {
+          cout << getMarca() << ": motocicleta" << endl;
+      }
+  };
+
+  int main() {
+      Vehiculo* flota[3];
+      flota[0] = new Auto("Toyota", 4);
+      flota[1] = new Moto("Honda");
+      flota[2] = new Auto("BMW", 2);
+
+      for (int i = 0; i < 3; i++)
+          flota[i]->describir();   // polimorfismo en accion
+
+      // Liberar memoria — SIEMPRE necesario con new
+      for (int i = 0; i < 3; i++) {
+          delete flota[i];
+          flota[i] = nullptr;
+      }
+      return 0;
+  }
+
+  Salida:
+    Toyota: auto con 4 puertas
+    Honda: motocicleta
+    BMW: auto con 2 puertas
+
+  NOTA: el destructor virtual en Vehiculo es obligatorio cuando
+  usas polimorfismo con delete. Sin él, al hacer delete flota[i]
+  solo se llama el destructor de Vehiculo, nunca el de Auto/Moto,
+  causando un memory leak parcial.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EJERCICIOS — Nivel 7
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+----------------------------------------------------------------
+E089 | Clase básica
+Crea la clase Rectangulo con:
+  - Atributos privados: base, altura (double)
+  - Constructor con parámetros
+  - Métodos públicos: calcularArea(), calcularPerimetro(), imprimir()
+
+Instancia uno con valores leídos del teclado.
+
+Entrada: 5.0  3.0
+Salida esperada:
+  Rectangulo: base=5.00, altura=3.00
+  Area: 15.00
+  Perimetro: 16.00
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E090 | Encapsulamiento — cuenta bancaria
+Crea la clase CuentaBancaria con:
+  - Atributo privado: saldo (double)
+  - Constructor con saldo inicial
+  - depositar(double) con validación (monto > 0)
+  - retirar(double) con validación (saldo suficiente y monto > 0)
+  - getSaldo()
+
+En main usa un menú do-while:
+  1. Depositar
+  2. Retirar
+  3. Ver saldo
+  4. Salir
+
+Entrada:
+  1000.0
+  1
+  500.0
+  2
+  200.0
+  2
+  2000.0
+  4
+Salida esperada:
+  Saldo inicial: $1000.00
+  === Menu ===
+  1. Depositar  2. Retirar  3. Ver saldo  4. Salir
+  Opcion: Monto: Deposito OK. Saldo: $1500.00
+  === Menu ===
+  1. Depositar  2. Retirar  3. Ver saldo  4. Salir
+  Opcion: Monto: Retiro OK. Saldo: $1300.00
+  === Menu ===
+  1. Depositar  2. Retirar  3. Ver saldo  4. Salir
+  Opcion: Monto: Error: saldo insuficiente. Saldo: $1300.00
+  === Menu ===
+  1. Depositar  2. Retirar  3. Ver saldo  4. Salir
+  Opcion: Hasta pronto.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E091 | Constructor y destructor
+Crea la clase Sensor con:
+  - nombre (string), valor (double)
+  - Constructor: imprime "[nombre] activado."
+  - Destructor:  imprime "[nombre] desactivado."
+  - Método leer(): retorna el valor
+
+IMPORTANTE: declara los sensores como variables locales
+(NO con new) para que el destructor se llame automáticamente
+al salir de main. El orden de destrucción es INVERSO al de
+creación — los objetos en stack se destruyen como una pila (LIFO).
+
+  Sensor s1("Temperatura", 36.6);  // se destruye segundo
+  Sensor s2("Presion", 101.3);     // se destruye primero
+
+Entrada: (ninguna — valores hardcodeados)
+Salida esperada:
+  Temperatura activado.
+  Presion activado.
+  Temperatura: 36.60
+  Presion: 101.30
+  Presion desactivado.
+  Temperatura desactivado.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E092 | Arreglo de objetos
+Crea la clase Producto con: nombre (string), precio (double).
+Lee N productos en un arreglo de objetos.
+Imprime el más caro y el más barato.
+
+Entrada:
+  3
+  Leche 1.50
+  Pan 0.80
+  Queso 3.20
+Salida esperada:
+  Mas caro: Queso ($3.20)
+  Mas barato: Pan ($0.80)
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E093 | Herencia básica
+Crea la clase base Animal:
+  - Atributo: nombre (string)
+  - Método virtual: hacerSonido() → imprime "..."
+  - Método: getNombre()
+
+Crea Perro y Gato que sobrescriban hacerSonido().
+
+Entrada: (ninguna)
+Salida esperada:
+  Perro (Rex): Guau!
+  Gato (Luna): Miau!
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E094 | Polimorfismo
+TRAZA A MANO:
+  Animal* animales[4];
+  animales[0] = new Perro("Rex");
+  animales[1] = new Gato("Luna");
+  animales[2] = new Perro("Max");
+  animales[3] = new Gato("Michi");
+
+  Para cada elemento, ¿qué versión de hacerSonido() se ejecuta?
+  ¿Por qué es necesario que el método sea virtual?
+
+Luego implementa el programa.
+
+Entrada: (ninguna)
+Salida esperada:
+  Rex: Guau!
+  Luna: Miau!
+  Max: Guau!
+  Michi: Miau!
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E095 | Clase abstracta — figuras
+Crea la clase abstracta Figura con:
+  - virtual double calcularArea() = 0
+  - virtual double calcularPerimetro() = 0
+  - void describir() que llama a los anteriores e imprime
+
+Implementa Circulo y Triangulo como clases concretas.
+
+  Circulo: PI = 3.14159
+    Area      = PI * r * r
+    Perimetro = 2 * PI * r
+
+  Triangulo (dados sus 3 lados a, b, c):
+    Perimetro = a + b + c
+    Area (fórmula de Herón):
+      s    = (a + b + c) / 2.0
+      area = sqrt(s * (s-a) * (s-b) * (s-c))
+    Requiere: #include <cmath> para sqrt()
+
+Entrada:
+  5.0
+  3.0 4.0 5.0
+Salida esperada:
+  Circulo (r=5.00): Area=78.54, Perimetro=31.42
+  Triangulo (3.00,4.00,5.00): Area=6.00, Perimetro=12.00
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E096 | Sobrecarga de operadores
+Crea la clase Vector2D con atributos x, y (double).
+Sobrecarga:
+  + para suma de vectores
+  * para producto escalar (dot product = x1*x2 + y1*y2)
+  << para imprimir el vector (friend function)
+
+Entrada:
+  3.0 4.0
+  1.0 2.0
+Salida esperada:
+  v1 = (3.00, 4.00)
+  v2 = (1.00, 2.00)
+  v1 + v2 = (4.00, 6.00)
+  v1 · v2 = 11.00
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E097 | Métodos estáticos
+Crea la clase Contador con:
+  - Atributo estático: total (int), inicializado en 0
+    (fuera de la clase: int Contador::total = 0;)
+  - Constructor que incrementa total e imprime el conteo
+  - Destructor que decrementa total e imprime el conteo
+  - Método estático: getTotal()
+
+Los atributos estáticos son COMPARTIDOS por todos los objetos
+de la clase — existe una sola copia sin importar cuántos
+objetos se creen.
+
+Para garantizar la salida esperada, declara los objetos
+como variables locales EN ESTE ORDEN dentro de un bloque {}:
+  cout << "Total objetos: " << Contador::getTotal() << endl;
+  {
+      Contador a;   // crea A
+      Contador b;   // crea B
+      Contador c;   // crea C
+  }                 // destruye C, luego B, luego A (LIFO)
+
+Entrada: (ninguna)
+Salida esperada:
+  Total objetos: 0
+  (crear A) Total objetos: 1
+  (crear B) Total objetos: 2
+  (crear C) Total objetos: 3
+  (destruir C) Total objetos: 2
+  (destruir B) Total objetos: 1
+  (destruir A) Total objetos: 0
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E098 | Herencia múltiple
+Crea:
+  Volador con método virtual volar()
+  Nadador con método virtual nadar()
+  Pato que hereda de ambos, con nombre
+
+Instancia un Pato y llama ambos métodos.
+
+Entrada: (ninguna)
+Salida esperada:
+  Donald vuela: Fiu fiu!
+  Donald nada: Splash splash!
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E099 | Memoria dinámica + OOP
+Crea la clase Lista con:
+  - Constructor Lista(int capacidad): recibe la capacidad máxima
+    y reserva dinámicamente un arreglo de esa capacidad con new.
+  - Atributos privados: int* datos, int capacidad, int cantidad
+  - Destructor ~Lista(): libera el arreglo e imprime mensaje.
+  - agregar(int val): agrega val si hay espacio (cantidad < capacidad).
+    Si está llena, imprime "Lista llena."
+  - imprimir(): imprime todos los elementos agregados.
+  - promedio(): retorna el promedio de los elementos agregados.
+
+Entrada:
+  5
+  10 20 30 40 50
+Salida esperada:
+  Lista: 10 20 30 40 50
+  Promedio: 30.00
+  Destructor: memoria liberada.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+E100 | Proyecto integrador — sistema de empleados
+Clases: Empleado (base), Programador (hereda), Gerente (hereda)
+  Empleado: nombre (string), salario (double)
+            virtual double calcularBono() = 0   ← abstracto
+  Programador: lenguaje (string)
+               calcularBono() → retorna 10% del salario
+  Gerente: departamento (string)
+           calcularBono() → retorna 20% del salario
+
+En main declara los empleados directamente (sin leer tipo
+desde teclado — instancia cada uno con sus datos hardcodeados
+o lee nombre, salario y dato extra para cada tipo por separado).
+
+Usa un arreglo de punteros Empleado* y recórrelo con polimorfismo.
+Al final imprime el total de bonos.
+
+Ejemplo de instanciación:
+  Empleado* equipo[3];
+  equipo[0] = new Programador("Ana", 3000, "Python");
+  equipo[1] = new Gerente("Luis", 5000, "Sistemas");
+  equipo[2] = new Programador("Carla", 2800, "C++");
+
+Salida esperada:
+  Ana (Programador/Python): Salario=$3000.00, Bono=$300.00
+  Luis (Gerente/Sistemas): Salario=$5000.00, Bono=$1000.00
+  Carla (Programador/C++): Salario=$2800.00, Bono=$280.00
+  ─────────────────────────────
+  Total bonos a pagar: $1580.00
+----------------------------------------------------------------
+
+================================================================
+FIN DEL CUADERNILLO
+100 ejercicios · 8 niveles · C++ de cero a pro
+USFQ — Programación Avanzada en C++
+================================================================

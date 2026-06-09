@@ -1,0 +1,5 @@
+Ana 88
+Luis 75
+Carla 95
+Pedro 82
+Promedio del grupo: 85.00
