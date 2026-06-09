@@ -1,0 +1,10 @@
+Comandos para git bash
+
+pwd -- print worling directory para saber en donde estas
+mkdir ... -- crea una carpeta nueva 
+clear -- limpiar interfaz
+cd ... -- change directory (cambiar directorio) entra a una carpeta en especifico
+nano ... -- crea archivos (.txt)  ctrl o para guardar y ctrl x para salir 
+ls -- lista todo los archivos 
+cat -- presenta el contenido de los archivos
+
